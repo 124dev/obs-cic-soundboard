@@ -5,35 +5,32 @@
 
 #include "AddSoundDialog.hpp"
 
-#include <QApplication>   // QApplication::activeWindow()
-#include <QFileDialog>    // QFileDialog::getOpenFileName()
-#include <QFileInfo>      // QFileInfo::completeBaseName()
+#include <QApplication> // QApplication::activeWindow()
+#include <QFileDialog>  // QFileDialog::getOpenFileName()
+#include <QFileInfo>    // QFileInfo::completeBaseName()
 
 // ── Constructor ──────────────────────────────────────────────
 
-AddSoundDialog::AddSoundDialog(QWidget *parent)
-    : QDialog(parent)
+AddSoundDialog::AddSoundDialog(QWidget *parent) : QDialog(parent)
 {
-    // Build the UI from the Qt Designer-generated class.
-    ui.setupUi(this);
+	// Build the UI from the Qt Designer-generated class.
+	ui.setupUi(this);
 
-    // "Browse…" button → open file picker.
-    connect(ui.btnBrowse, &QPushButton::clicked,
-            this, &AddSoundDialog::onBrowseClicked);
+	// "Browse…" button → open file picker.
+	connect(ui.btnBrowse, &QPushButton::clicked, this, &AddSoundDialog::onBrowseClicked);
 
-    // Auto-fill the display name from the chosen file's base name,
-    // but only when the name field is still empty (don't overwrite user input).
-    connect(ui.txtFilePath, &QLineEdit::textChanged,
-            this, [this](const QString &path) {
-                if (ui.txtName->text().isEmpty() && !path.isEmpty()) {
-                    QFileInfo info(path);
-                    ui.txtName->setText(info.completeBaseName()); // e.g. "my_sound" from "my_sound.mp3"
-                }
-            });
+	// Auto-fill the display name from the chosen file's base name,
+	// but only when the name field is still empty (don't overwrite user input).
+	connect(ui.txtFilePath, &QLineEdit::textChanged, this, [this](const QString &path) {
+		if (ui.txtName->text().isEmpty() && !path.isEmpty()) {
+			QFileInfo info(path);
+			ui.txtName->setText(info.completeBaseName()); // e.g. "my_sound" from "my_sound.mp3"
+		}
+	});
 
-    // Note: OK / Cancel button-box connections are wired directly in the .ui
-    // file (accepted() → accept(), rejected() → reject()), so nothing extra
-    // is needed here.
+	// Note: OK / Cancel button-box connections are wired directly in the .ui
+	// file (accepted() → accept(), rejected() → reject()), so nothing extra
+	// is needed here.
 }
 
 // ── Destructor ───────────────────────────────────────────────
@@ -45,13 +42,13 @@ AddSoundDialog::~AddSoundDialog() = default;
 // Return the text the user typed in the "Display Name" field.
 QString AddSoundDialog::getDisplayName() const
 {
-    return ui.txtName->text();
+	return ui.txtName->text();
 }
 
 // Return the absolute file path shown in the read-only path field.
 QString AddSoundDialog::getFilePath() const
 {
-    return ui.txtFilePath->text();
+	return ui.txtFilePath->text();
 }
 
 // ── Setters (used when editing an existing clip) ─────────────
@@ -59,7 +56,7 @@ QString AddSoundDialog::getFilePath() const
 // Pre-populate the display name field (edit mode).
 void AddSoundDialog::setDisplayName(const QString &name)
 {
-    ui.txtName->setText(name);
+	ui.txtName->setText(name);
 }
 
 // Pre-populate the file path field (edit mode).
@@ -67,23 +64,20 @@ void AddSoundDialog::setDisplayName(const QString &name)
 // the name field is already non-empty when editing.
 void AddSoundDialog::setFilePath(const QString &path)
 {
-    ui.txtFilePath->setText(path);
+	ui.txtFilePath->setText(path);
 }
 
 // ── Slots ────────────────────────────────────────────────────
 
 void AddSoundDialog::onBrowseClicked()
 {
-    // Use the active window as parent so the picker appears above any dock/panel.
-    // (Using 'this' can sometimes fail when the dialog is embedded in a dock.)
-    QString path = QFileDialog::getOpenFileName(
-        QApplication::activeWindow(),
-        tr("Select Audio File"),
-        QString(),   // Start in the last-used directory (Qt default)
-        tr("Audio Files (*.mp3 *.wav *.ogg *.flac *.aac)")
-    );
+	// Use the active window as parent so the picker appears above any dock/panel.
+	// (Using 'this' can sometimes fail when the dialog is embedded in a dock.)
+	QString path = QFileDialog::getOpenFileName(QApplication::activeWindow(), tr("Select Audio File"),
+						    QString(), // Start in the last-used directory (Qt default)
+						    tr("Audio Files (*.mp3 *.wav *.ogg *.flac *.aac)"));
 
-    // Only update the field if the user actually picked a file (not cancelled).
-    if (!path.isEmpty())
-        ui.txtFilePath->setText(path);
+	// Only update the field if the user actually picked a file (not cancelled).
+	if (!path.isEmpty())
+		ui.txtFilePath->setText(path);
 }
