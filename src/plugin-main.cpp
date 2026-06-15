@@ -26,7 +26,15 @@
 OBS_DECLARE_MODULE()
 OBS_MODULE_AUTHOR("Juan Carlo Marasigan");
 OBS_MODULE_USE_DEFAULT_LOCALE("CIC Soundboard", "en-US")
+MODULE_EXPORT const char *obs_module_description(void)
+{
+	return obs_module_text("Description");
+}
 
+MODULE_EXPORT const char *obs_module_name(void)
+{
+	return obs_module_text("CIC Soundboard");
+}
 // ── Global state ─────────────────────────────────────────────
 
 // Single plugin-wide Soundboard instance.
@@ -113,8 +121,7 @@ void obs_module_unload(void)
     // Deregister the save callback to prevent a use-after-free if OBS
     // flushes one more save after g_soundboard has been destroyed.
     obs_frontend_remove_save_callback(onFrontendSave, nullptr);
-
-    // g_soundboard is Qt-parented to the main window, so Qt will delete it.
+    obs_frontend_remove_event_callback(onEvent, nullptr);
     // We null the pointer here so no stale callbacks can fire after this point.
     g_soundboard = nullptr;
 
