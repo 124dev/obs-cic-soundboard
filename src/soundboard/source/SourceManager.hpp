@@ -20,32 +20,30 @@
 
 class SourceManager {
 public:
-	SourceManager() = default;
-	~SourceManager() = default; // clearSource() must be called before destruction
-				    // if you want an explicit log message; the OBSSource
-				    // RAII wrapper will release the ref automatically.
+    SourceManager()  = default;
+    ~SourceManager() = default; 
+                               
+    // ── Source lifecycle ─────────────────────────────────────
+    // Create (or adopt an existing) "Soundboard" ffmpeg_source and
+    // attach it to output channel 63.  Safe to call multiple times.
+    void ensureSource();
 
-	// ── Source lifecycle ─────────────────────────────────────
-	// Create (or adopt an existing) "Soundboard" ffmpeg_source and
-	// attach it to output channel 63.  Safe to call multiple times.
-	void ensureSource();
+    // Detach from output channel 63, release the source reference,
+    // and reset the current-file tracker.
+    void clearSource();
 
-	// Detach from output channel 63, release the source reference,
-	// and reset the current-file tracker.
-	void clearSource();
+    // ── Playback ─────────────────────────────────────────────
+    // Configure the source with the given file and start playback.
+    // If the file is already loaded, just restart it.
+    void playFile(const QString &path);
 
-	// ── Playback ─────────────────────────────────────────────
-	// Configure the source with the given file and start playback.
-	// If the file is already loaded, just restart it.
-	void playFile(const QString &path);
+    // Stop whatever is currently playing.
+    void stop();
 
-	// Stop whatever is currently playing.
-	void stop();
-
-	// ── State query ──────────────────────────────────────────
-	bool hasSource() const { return mediaSource != nullptr; }
+    // ── State query ──────────────────────────────────────────
+    bool hasSource() const { return mediaSource != nullptr; }
 
 private:
-	OBSSource mediaSource = nullptr; // RAII wrapper; null when no source exists
-	QString currentFile;             // Path most recently sent to the source
+    OBSSource mediaSource = nullptr; // RAII wrapper; null when no source exists
+    QString   currentFile;           // Path most recently sent to the source
 };
