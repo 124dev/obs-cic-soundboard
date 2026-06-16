@@ -1,6 +1,6 @@
 // ============================================================
 // AddSoundDialog.cpp
-// Implementation of the Add/Edit sound dialog.
+// Implementation of the Add / Edit sound dialog.
 // ============================================================
 
 #include "AddSoundDialog.hpp"
@@ -13,7 +13,6 @@
 
 AddSoundDialog::AddSoundDialog(QWidget *parent) : QDialog(parent)
 {
-	// Build the UI from the Qt Designer-generated class.
 	ui.setupUi(this);
 
 	// "Browse…" button → open file picker.
@@ -24,13 +23,14 @@ AddSoundDialog::AddSoundDialog(QWidget *parent) : QDialog(parent)
 	connect(ui.txtFilePath, &QLineEdit::textChanged, this, [this](const QString &path) {
 		if (ui.txtName->text().isEmpty() && !path.isEmpty()) {
 			QFileInfo info(path);
-			ui.txtName->setText(info.completeBaseName()); // e.g. "my_sound" from "my_sound.mp3"
+			// e.g. "my_sound" from "my_sound.mp3"
+			ui.txtName->setText(info.completeBaseName());
 		}
 	});
 
-	// Note: OK / Cancel button-box connections are wired directly in the .ui
-	// file (accepted() → accept(), rejected() → reject()), so nothing extra
-	// is needed here.
+	// Note: OK / Cancel button-box connections are wired in the .ui file
+	// (accepted() → accept(), rejected() → reject()), so nothing extra is
+	// needed here.
 }
 
 // ── Destructor ───────────────────────────────────────────────
@@ -39,21 +39,18 @@ AddSoundDialog::~AddSoundDialog() = default;
 
 // ── Getters ──────────────────────────────────────────────────
 
-// Return the text the user typed in the "Display Name" field.
 QString AddSoundDialog::getDisplayName() const
 {
 	return ui.txtName->text();
 }
 
-// Return the absolute file path shown in the read-only path field.
 QString AddSoundDialog::getFilePath() const
 {
 	return ui.txtFilePath->text();
 }
 
-// ── Setters (used when editing an existing clip) ─────────────
+// ── Setters ──────────────────────────────────────────────────
 
-// Pre-populate the display name field (edit mode).
 void AddSoundDialog::setDisplayName(const QString &name)
 {
 	ui.txtName->setText(name);
@@ -71,13 +68,13 @@ void AddSoundDialog::setFilePath(const QString &path)
 
 void AddSoundDialog::onBrowseClicked()
 {
-	// Use the active window as parent so the picker appears above any dock/panel.
-	// (Using 'this' can sometimes fail when the dialog is embedded in a dock.)
-	QString path = QFileDialog::getOpenFileName(QApplication::activeWindow(), tr("Select Audio File"),
-						    QString(), // Start in the last-used directory (Qt default)
-						    tr("Audio Files (*.mp3 *.wav *.ogg *.flac *.aac)"));
+	// Use the active window as parent so the picker appears above any
+	// dock/panel. Using 'this' can sometimes fail when the dialog is
+	// embedded in a dock.
+	const QString path = QFileDialog::getOpenFileName(QApplication::activeWindow(), tr("Select Audio File"),
+							  QString(), // start in last-used directory (Qt default)
+							  tr("Audio Files (*.mp3 *.wav *.ogg *.flac *.aac)"));
 
-	// Only update the field if the user actually picked a file (not cancelled).
 	if (!path.isEmpty())
 		ui.txtFilePath->setText(path);
 }

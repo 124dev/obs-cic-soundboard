@@ -36,7 +36,7 @@ public:
 	void setFilePath(const QString &path);    // Pre-fill the file-path field
 
 private slots:
-	// Opens a file-picker dialog; populates txtFilePath (and auto-fills txtName).
+	// Opens a file-picker dialog; populates txtFilePath and auto-fills txtName.
 	void onBrowseClicked();
 
 private:
