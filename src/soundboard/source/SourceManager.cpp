@@ -110,3 +110,22 @@ void SourceManager::stop()
 	if (mediaSource)
 		obs_source_media_stop(mediaSource);
 }
+
+void SourceManager::mute()
+{
+    if (mediaSource)
+        obs_source_set_muted(mediaSource, true);
+}
+
+void SourceManager::unmute()
+{
+    if (mediaSource)
+        obs_source_set_muted(mediaSource, false);
+}
+
+void SourceManager::restart()
+{
+    if (mediaSource)
+        obs_source_media_restart(mediaSource);
+}
+

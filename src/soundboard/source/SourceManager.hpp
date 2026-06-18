@@ -39,7 +39,14 @@ public:
 
     // Stop whatever is currently playing.
     void stop();
+    // mute source
+    void mute();
 
+    // void source unmute
+    void unmute();
+
+    // restart source
+    void restart();
     // ── State query ──────────────────────────────────────────
     bool hasSource() const { return mediaSource != nullptr; }
 

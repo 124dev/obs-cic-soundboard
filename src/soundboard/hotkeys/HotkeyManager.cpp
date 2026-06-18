@@ -17,7 +17,39 @@ extern Soundboard *g_soundboard;
 
 HotkeyManager::HotkeyManager(Soundboard *sb) : soundboard(sb)
 {
-	// ── Global: Stop Playback ────────────────────────────────
+	// mute and unmute source
+	restartHotkeyId = obs_hotkey_register_frontend(
+		"soundboard.restart", "Soundboard: Restart Source",
+		[](void *data, obs_hotkey_id, obs_hotkey_t *, bool pressed) {
+			if (!pressed)
+				return;
+			auto *sb = static_cast<Soundboard *>(data);
+			sb->getSourceManager().restart();
+		},
+		soundboard);
+
+	muteHotkeyId = obs_hotkey_register_frontend(
+		"soundboard.mute", "Soundboard: Mute Source",
+		[](void *data, obs_hotkey_id, obs_hotkey_t *, bool pressed) {
+			if (!pressed)
+				return;
+			auto *sb = static_cast<Soundboard *>(data);
+			sb->getSourceManager().mute();
+		},
+		soundboard);
+
+	unmuteHotkeyId = obs_hotkey_register_frontend(
+		"soundboard.unmute", "Soundboard: Unmute Source",
+		[](void *data, obs_hotkey_id, obs_hotkey_t *, bool pressed) {
+			if (!pressed)
+				return;
+			auto *sb = static_cast<Soundboard *>(data);
+			sb->getSourceManager().unmute();
+		},
+		soundboard);
+
+	//  GLOBAL HOTKEYS
+	// stop playback
 	stopHotkeyId = obs_hotkey_register_frontend(
 		"soundboard.stop", "Soundboard: Stop Playback",
 		[](void *data, obs_hotkey_id, obs_hotkey_t *, bool pressed) {
@@ -28,8 +60,8 @@ HotkeyManager::HotkeyManager(Soundboard *sb) : soundboard(sb)
 		},
 		soundboard);
 
-	// ── Global: Play Selected ────────────────────────────────
-	// Now plays the last played item directly
+
+	// play last item
 	playHotkeyId = obs_hotkey_register_frontend(
 		"soundboard.play_selected", "Soundboard: Play Selected",
 		[](void *data, obs_hotkey_id, obs_hotkey_t *, bool pressed) {
@@ -142,6 +174,17 @@ void HotkeyManager::unregisterAll(QListWidget *list)
 
 void HotkeyManager::saveGlobalHotkeys(obs_data_t *data) const
 {
+	if (restartHotkeyId != OBS_INVALID_HOTKEY_ID) {
+		OBSDataArrayAutoRelease bindings = obs_hotkey_save(restartHotkeyId);
+	}
+	if (muteHotkeyId != OBS_INVALID_HOTKEY_ID) {
+		OBSDataArrayAutoRelease bindings = obs_hotkey_save(muteHotkeyId);
+		obs_data_set_array(data, "mute_hotkey", bindings);
+	}
+	if (unmuteHotkeyId != OBS_INVALID_HOTKEY_ID) {
+		OBSDataArrayAutoRelease bindings = obs_hotkey_save(unmuteHotkeyId);
+		obs_data_set_array(data, "unmute_hotkey", bindings);
+	}
 	if (stopHotkeyId != OBS_INVALID_HOTKEY_ID) {
 		OBSDataArrayAutoRelease bindings = obs_hotkey_save(stopHotkeyId);
 		obs_data_set_array(data, "stop_hotkey", bindings);
@@ -158,6 +201,21 @@ void HotkeyManager::loadGlobalHotkeys(obs_data_t *data)
 	if (!data)
 		return;
 
+	if (restartHotkeyId != OBS_INVALID_HOTKEY_ID) {
+		OBSDataArrayAutoRelease bindings = obs_data_get_array(data, "restart_hotkey");
+		if (bindings)
+			obs_hotkey_load(restartHotkeyId, bindings);
+	}
+	if (muteHotkeyId != OBS_INVALID_HOTKEY_ID) {
+		OBSDataArrayAutoRelease bindings = obs_data_get_array(data, "mute_hotkey");
+		if (bindings)
+			obs_hotkey_load(muteHotkeyId, bindings);
+	}
+	if (unmuteHotkeyId != OBS_INVALID_HOTKEY_ID) {
+		OBSDataArrayAutoRelease bindings = obs_data_get_array(data, "unmute_hotkey");
+		if (bindings)
+			obs_hotkey_load(unmuteHotkeyId, bindings);
+	}
 	if (stopHotkeyId != OBS_INVALID_HOTKEY_ID) {
 		OBSDataArrayAutoRelease bindings = obs_data_get_array(data, "stop_hotkey");
 		if (bindings)

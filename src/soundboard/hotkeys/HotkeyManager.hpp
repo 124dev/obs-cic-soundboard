@@ -60,8 +60,11 @@ private:
 	Soundboard *soundboard = nullptr;
 
 	// Global hotkey IDs (registered once in the constructor).
+	obs_hotkey_id restartHotkeyId = OBS_INVALID_HOTKEY_ID;
 	obs_hotkey_id stopHotkeyId = OBS_INVALID_HOTKEY_ID;
 	obs_hotkey_id playHotkeyId = OBS_INVALID_HOTKEY_ID;
+	obs_hotkey_id muteHotkeyId = OBS_INVALID_HOTKEY_ID;
+	obs_hotkey_id unmuteHotkeyId = OBS_INVALID_HOTKEY_ID;
 
 	// Per-clip maps, all keyed by clip UUID (Qt::UserRole+1).
 	QMap<QString, obs_hotkey_id> hotkeyMap;        // uid → hotkey id
