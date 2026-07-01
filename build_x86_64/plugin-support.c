@@ -19,7 +19,7 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 #include <plugin-support.h>
 
 const char *PLUGIN_NAME = "obs-cic-soundboard";
-const char *PLUGIN_VERSION = "2.0.1";
+const char *PLUGIN_VERSION = "2.0.0";
 
 void obs_log(int log_level, const char *format, ...)
 {

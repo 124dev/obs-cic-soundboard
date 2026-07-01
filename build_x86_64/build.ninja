@@ -171,7 +171,7 @@ build obs-cic-soundboard.so: CXX_MODULE_LIBRARY_LINKER__obs-cic-soundboard_RelWi
   LINK_FLAGS = -shared -Wl,--dependency-file=CMakeFiles/obs-cic-soundboard.dir/link.d
   LINK_LIBRARIES = /usr/lib/libobs-frontend-api.so.30  /usr/lib/libQt6Widgets.so.6.11.1  libplugin-support.a  /usr/lib/libobs.so.30  /usr/lib/libQt6Gui.so.6.11.1  /usr/lib/libGLX.so  /usr/lib/libOpenGL.so  /usr/lib/libQt6Core.so.6.11.1  -lgcc_s_asneeded  -lgcc_s_asneeded
   OBJECT_DIR = CMakeFiles/obs-cic-soundboard.dir
-  POST_BUILD = cd /home/arch12/coding/obs-cic-soundboard/build_x86_64 && /usr/bin/cmake -E make_directory /home/arch12/coding/obs-cic-soundboard/build_x86_64/rundir/RelWithDebInfo && /usr/bin/cmake -E copy_if_different /home/arch12/coding/obs-cic-soundboard/build_x86_64/obs-cic-soundboard.so /home/arch12/coding/obs-cic-soundboard/build_x86_64/rundir/RelWithDebInfo && cd /home/arch12/coding/obs-cic-soundboard/build_x86_64 && /usr/bin/cmake -E make_directory /home/arch12/coding/obs-cic-soundboard/build_x86_64/rundir/RelWithDebInfo/obs-cic-soundboard && /usr/bin/cmake -E copy_directory /home/arch12/coding/obs-cic-soundboard/data /home/arch12/coding/obs-cic-soundboard/build_x86_64/rundir/RelWithDebInfo/obs-cic-soundboard
+  POST_BUILD = cd /home/arch12/coding/obs-cic-soundboard/build_x86_64 && /usr/bin/cmake -E make_directory /home/arch12/coding/obs-cic-soundboard/build_x86_64/rundir/RelWithDebInfo && /usr/bin/cmake -E copy_if_different /home/arch12/coding/obs-cic-soundboard/build_x86_64/obs-cic-soundboard.so /home/arch12/coding/obs-cic-soundboard/build_x86_64/rundir/RelWithDebInfo
   PRE_LINK = :
   TARGET_FILE = obs-cic-soundboard.so
   TARGET_PDB = obs-cic-soundboard.so.dbg

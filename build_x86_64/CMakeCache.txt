@@ -208,7 +208,7 @@ CMAKE_PROJECT_NAME:STATIC=obs-cic-soundboard
 CMAKE_PROJECT_SPDX_LICENSE:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION:STATIC=2.0.1
+CMAKE_PROJECT_VERSION:STATIC=2.0.0
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION_MAJOR:STATIC=2
@@ -217,7 +217,7 @@ CMAKE_PROJECT_VERSION_MAJOR:STATIC=2
 CMAKE_PROJECT_VERSION_MINOR:STATIC=0
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION_PATCH:STATIC=1
+CMAKE_PROJECT_VERSION_PATCH:STATIC=0
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION_TWEAK:STATIC=
@@ -389,15 +389,6 @@ Vulkan_INCLUDE_DIR:PATH=/usr/include
 
 //Path to a library.
 Vulkan_LIBRARY:FILEPATH=/usr/lib/libvulkan.so
-
-//Value Computed by CMake
-cic-soundboard_BINARY_DIR:STATIC=/home/arch12/coding/obs-cic-soundboard/build_x86_64
-
-//Value Computed by CMake
-cic-soundboard_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-cic-soundboard_SOURCE_DIR:STATIC=/home/arch12/coding/obs-cic-soundboard
 
 //The directory containing a CMake configuration file for libobs.
 libobs_DIR:PATH=/usr/lib/cmake/libobs

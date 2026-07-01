@@ -47,7 +47,7 @@ rule CXX_MODULE_LIBRARY_LINKER__obs-cic-soundboard_RelWithDebInfo
   depfile = $DEP_FILE
   deps = gcc
   command = $PRE_LINK && /usr/bin/c++ -fPIC $LANGUAGE_COMPILE_FLAGS $ARCH_FLAGS $LINK_FLAGS $SONAME_FLAG$SONAME -o $TARGET_FILE $in $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
-  description = Linking CXX shared module $TARGET_FILE; Copy obs-cic-soundboard to rundir; Copy obs-cic-soundboard resources to rundir
+  description = Linking CXX shared module $TARGET_FILE; Copy obs-cic-soundboard to rundir
   restat = $RESTAT
 
 
