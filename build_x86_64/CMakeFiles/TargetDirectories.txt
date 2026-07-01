@@ -1,0 +1,12 @@
+/home/arch12/coding/obs-cic-soundboard/build_x86_64/CMakeFiles/plugin-support.dir
+/home/arch12/coding/obs-cic-soundboard/build_x86_64/CMakeFiles/obs-cic-soundboard.dir
+/home/arch12/coding/obs-cic-soundboard/build_x86_64/CMakeFiles/package.dir
+/home/arch12/coding/obs-cic-soundboard/build_x86_64/CMakeFiles/package_source.dir
+/home/arch12/coding/obs-cic-soundboard/build_x86_64/CMakeFiles/edit_cache.dir
+/home/arch12/coding/obs-cic-soundboard/build_x86_64/CMakeFiles/rebuild_cache.dir
+/home/arch12/coding/obs-cic-soundboard/build_x86_64/CMakeFiles/list_install_components.dir
+/home/arch12/coding/obs-cic-soundboard/build_x86_64/CMakeFiles/install.dir
+/home/arch12/coding/obs-cic-soundboard/build_x86_64/CMakeFiles/install/local.dir
+/home/arch12/coding/obs-cic-soundboard/build_x86_64/CMakeFiles/install/strip.dir
+/home/arch12/coding/obs-cic-soundboard/build_x86_64/CMakeFiles/obs-cic-soundboard_autogen_timestamp_deps.dir
+/home/arch12/coding/obs-cic-soundboard/build_x86_64/CMakeFiles/obs-cic-soundboard_autogen.dir
