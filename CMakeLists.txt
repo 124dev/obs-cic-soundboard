@@ -35,27 +35,24 @@ if(ENABLE_QT)
   set_property(TARGET ${CMAKE_PROJECT_NAME} APPEND PROPERTY AUTOUIC_SEARCH_PATHS src/forms)
 endif()
 
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+target_sources(
+  ${CMAKE_PROJECT_NAME}
+  PRIVATE
     src/obs-cic-soundboard.cpp
     src/plugin-support.c.in
     src/plugin-support.h
-    
     src/soundboard/Soundboard.cpp
     src/soundboard/Soundboard.hpp
     src/forms/Soundboard.ui
     src/forms/AddSoundDialog.ui
     src/soundboard/ui/AddSoundDialog.cpp
     src/soundboard/ui/AddSoundDialog.hpp
-
     src/soundboard/hotkeys/HotkeyManager.cpp
     src/soundboard/hotkeys/HotkeyManager.hpp
-
     src/soundboard/persistence/SoundboardStore.cpp
     src/soundboard/persistence/SoundboardStore.hpp
-    
     src/soundboard/source/SourceManager.cpp
     src/soundboard/source/SourceManager.hpp
-
     src/soundboard/ui/AddSoundDialog.cpp
     src/soundboard/ui/AddSoundDialog.hpp
 )
