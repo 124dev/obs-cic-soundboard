@@ -17,46 +17,70 @@ find_package(libobs REQUIRED)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OBS::libobs)
 
 if(ENABLE_FRONTEND_API)
-  find_package(obs-frontend-api REQUIRED)
-  target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OBS::obs-frontend-api)
+    find_package(obs-frontend-api REQUIRED)
+    target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OBS::obs-frontend-api)
 endif()
 
 if(ENABLE_QT)
-  find_package(Qt6 REQUIRED COMPONENTS Widgets Core)
-  target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt6::Core Qt6::Widgets)
-  target_compile_options(
-    ${CMAKE_PROJECT_NAME}
-    PRIVATE $<$<C_COMPILER_ID:Clang,AppleClang>:-Wno-quoted-include-in-framework-header -Wno-comma>
-  )
-  set_target_properties(
-    ${CMAKE_PROJECT_NAME}
-    PROPERTIES AUTOMOC ON AUTOUIC ON AUTORCC ON
-  )
-  set_property(TARGET ${CMAKE_PROJECT_NAME} APPEND PROPERTY AUTOUIC_SEARCH_PATHS src/forms)
+    find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
+
+    target_link_libraries(
+        ${CMAKE_PROJECT_NAME}
+        PRIVATE Qt6::Core Qt6::Widgets
+    )
+
+    target_compile_options(
+        ${CMAKE_PROJECT_NAME}
+        PRIVATE
+            $<$<C_COMPILER_ID:Clang,AppleClang>:
+                -Wno-quoted-include-in-framework-header
+                -Wno-comma
+            >
+    )
+
+    set_target_properties(
+        ${CMAKE_PROJECT_NAME}
+        PROPERTIES
+            AUTOMOC ON
+            AUTOUIC ON
+            AUTORCC ON
+    )
+
+    set_property(
+        TARGET ${CMAKE_PROJECT_NAME}
+        APPEND
+        PROPERTY AUTOUIC_SEARCH_PATHS src/forms
+    )
 endif()
 
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    src/obs-cic-soundboard.cpp
-    src/plugin-support.c.in
-    src/plugin-support.h
-    
-    src/soundboard/Soundboard.cpp
-    src/soundboard/Soundboard.hpp
-    src/forms/Soundboard.ui
-    src/forms/AddSoundDialog.ui
-    src/soundboard/ui/AddSoundDialog.cpp
-    src/soundboard/ui/AddSoundDialog.hpp
+target_sources(
+    ${CMAKE_PROJECT_NAME}
+    PRIVATE
+        src/obs-cic-soundboard.cpp
+        src/plugin-support.c.in
+        src/plugin-support.h
 
-    src/soundboard/hotkeys/HotkeyManager.cpp
-    src/soundboard/hotkeys/HotkeyManager.hpp
+        src/soundboard/Soundboard.cpp
+        src/soundboard/Soundboard.hpp
 
-    src/soundboard/persistence/SoundboardStore.cpp
-    src/soundboard/persistence/SoundboardStore.hpp
-    
-    src/soundboard/source/SourceManager.cpp
-    src/soundboard/source/SourceManager.hpp
+        src/forms/Soundboard.ui
+        src/forms/AddSoundDialog.ui
 
-    src/soundboard/ui/AddSoundDialog.cpp
-    src/soundboard/ui/AddSoundDialog.hpp
+        src/soundboard/hotkeys/HotkeyManager.cpp
+        src/soundboard/hotkeys/HotkeyManager.hpp
+
+        src/soundboard/persistence/SoundboardStore.cpp
+        src/soundboard/persistence/SoundboardStore.hpp
+
+        src/soundboard/source/SourceManager.cpp
+        src/soundboard/source/SourceManager.hpp
+
+        src/soundboard/ui/AddSoundDialog.cpp
+        src/soundboard/ui/AddSoundDialog.hpp
 )
-set_target_properties_plugin(${CMAKE_PROJECT_NAME} PROPERTIES OUTPUT_NAME ${_name})
+
+set_target_properties_plugin(
+    ${CMAKE_PROJECT_NAME}
+    PROPERTIES
+        OUTPUT_NAME ${_name}
+)
