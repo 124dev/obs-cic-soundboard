@@ -1,19 +1,11 @@
-// ============================================================
-// HotkeyManager.cpp
-// Implementation of per-clip and global OBS hotkey management.
-// ============================================================
+
 
 #include "HotkeyManager.hpp"
-#include "../Soundboard.hpp" // full definition needed for callback cast
+#include "../Soundboard.hpp" 
+#include <obs-module.h> 
 
-#include <obs-module.h> // blog()
-
-// g_soundboard is defined in plugin-main.cpp and used inside the
-// per-clip hotkey lambda so the callback always routes through the
-// current live instance.
 extern Soundboard *g_soundboard;
 
-// ── Construction / destruction ───────────────────────────────
 
 HotkeyManager::HotkeyManager(Soundboard *sb) : soundboard(sb)
 {
@@ -86,8 +78,6 @@ HotkeyManager::~HotkeyManager()
 	if (playHotkeyId != OBS_INVALID_HOTKEY_ID)
 		obs_hotkey_unregister(playHotkeyId);
 
-	// Per-clip hotkeys should already be cleared by unregisterAll()
-	// before the destructor runs, but clean up anything remaining.
 	for (auto it = hotkeyMap.begin(); it != hotkeyMap.end(); ++it)
 		obs_hotkey_unregister(it.value());
 
@@ -95,7 +85,6 @@ HotkeyManager::~HotkeyManager()
 		delete copy;
 }
 
-// ── Per-clip registration ─────────────────────────────────────
 
 void HotkeyManager::registerHotkey(QListWidgetItem *item)
 {
@@ -170,7 +159,6 @@ void HotkeyManager::unregisterAll(QListWidget *list)
 		unregisterHotkey(list->item(i));
 }
 
-// ── Persistence ───────────────────────────────────────────────
 
 void HotkeyManager::saveGlobalHotkeys(obs_data_t *data) const
 {

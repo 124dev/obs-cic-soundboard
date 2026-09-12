@@ -1,12 +1,11 @@
-#include <obs-module.h>       // OBS_DECLARE_MODULE, blog(), obs_data_*
-#include <obs-frontend-api.h> // obs_frontend_add_dock_by_id(), event callbacks
+#include <obs-module.h>       
+#include <obs-frontend-api.h> 
 
-#include <QMainWindow> // Cast from obs_frontend_get_main_window()
+#include <QMainWindow>
 
-#include "soundboard/Soundboard.hpp"
+#include "soundboard/Soundboard.hpp" 
 
-#include "plugin-support.h" // support file for meta data
-// ── OBS module boilerplate ───────────────────────────────────
+#include "plugin-support.h" 
 
 // Registers the module with OBS (name, description, author, etc.).
 OBS_DECLARE_MODULE()
@@ -22,7 +21,6 @@ MODULE_EXPORT const char *obs_module_name(void)
 	return obs_module_text("CIC Soundboard");
 }
 
-// GLOBAL STATE
 // soundboard instance
 Soundboard *g_soundboard = nullptr;
 
@@ -38,14 +36,12 @@ static void onFrontendSave(obs_data_t *saveData, bool saving, void * /*data*/)
 		return;
 
 	if (saving) {
-		// Serialize the clip list into a sub-object keyed "soundboard".
 		OBSDataAutoRelease sbData = obs_data_create();
 		g_soundboard->saveData(sbData);
 		obs_data_set_obj(saveData, "soundboard", sbData);
 	} else {
-		// Deserialize from the same sub-object on scene-collection load.
 		OBSDataAutoRelease sbData = obs_data_get_obj(saveData, "soundboard");
-		g_soundboard->loadData(sbData); // handles null sbData gracefully
+		g_soundboard->loadData(sbData); 
 	}
 }
 
@@ -91,9 +87,6 @@ void obs_module_post_load(void)
 // called when obs is about to shut down
 void obs_module_unload(void)
 {
-	// Remove event callbacks - check if they were registered first
-	// The remove functions are safe to call even if not registered,
-	// but we want to avoid the warning messages.
 
 	// First, delete the soundboard to ensure clean destruction
 	if (g_soundboard) {
@@ -101,7 +94,7 @@ void obs_module_unload(void)
 		g_soundboard = nullptr;
 	}
 
-	// Remove callbacks (these functions handle null internally)
+	// Remove callbacks
 	obs_frontend_remove_event_callback(onEvent, nullptr);
 	obs_frontend_remove_save_callback(onFrontendSave, nullptr);
 
@@ -121,27 +114,31 @@ static void onEvent(obs_frontend_event event, void *)
 			g_soundboard->ensureSource();
 		}
 		break;
-	// if you change to different scene collection
-	// clear the global audio source and strip the source's references then recreate the source
+	// if you change to different scene collection clear the global audio source and strip the source's references then recreate the source
 	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CHANGING:
 		if (g_soundboard) {
 			g_soundboard->clearSource();
 		}
 		break;
+
+	// if you changed obs scene collections, re-create scene sources to make sure it exist
 	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CHANGED:
 		blog(LOG_INFO, "[Soundboard] Scene collection changed — re-creating source");
 		if (g_soundboard) {
+			// add and make sure the global audio source is inside scene sources
 			g_soundboard->ensureSource();
 		}
 		break;
 	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CLEANUP:
 		blog(LOG_INFO, "[Soundboard] Scene collection cleanup");
+		if (g_soundboard) {
+			g_soundboard->clearSource();
+		}
 		break;
 
 	case OBS_FRONTEND_EVENT_EXIT:
 		blog(LOG_INFO, "[Soundboard] OBS exit");
 		break;
-
 	default:
 		break;
 	}
