@@ -107,28 +107,27 @@ static void onEvent(obs_frontend_event event, void *)
 {
 	switch (event) {
 
-	//  if obs finished loading shits
 	case OBS_FRONTEND_EVENT_FINISHED_LOADING:
 		if (g_soundboard) {
-			// add and make sure the global audio source is inside scene sources
+			// Add and make sure the global audio source is inside scene sources.
 			g_soundboard->ensureSource();
 		}
 		break;
-	// if you change to different scene collection clear the global audio source and strip the source's references then recreate the source
+
 	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CHANGING:
 		if (g_soundboard) {
+			// Clear the global audio source before changing collections.
 			g_soundboard->clearSource();
 		}
 		break;
 
-	// if you changed obs scene collections, re-create scene sources to make sure it exist
 	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CHANGED:
 		blog(LOG_INFO, "[Soundboard] Scene collection changed — re-creating source");
 		if (g_soundboard) {
-			// add and make sure the global audio source is inside scene sources
 			g_soundboard->ensureSource();
 		}
 		break;
+
 	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CLEANUP:
 		blog(LOG_INFO, "[Soundboard] Scene collection cleanup");
 		if (g_soundboard) {
@@ -138,7 +137,18 @@ static void onEvent(obs_frontend_event event, void *)
 
 	case OBS_FRONTEND_EVENT_EXIT:
 		blog(LOG_INFO, "[Soundboard] OBS exit");
+		if (g_soundboard) {
+			g_soundboard->clearSource();
+		}
 		break;
+
+	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_RENAMED:
+		blog(LOG_INFO, "[Soundboard] Scene Collection Renamed");
+		if (g_soundboard) {
+			g_soundboard->ensureSource();
+		}
+		break;
+
 	default:
 		break;
 	}
