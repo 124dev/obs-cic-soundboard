@@ -28,7 +28,8 @@ static void onFrontendSave(obs_data_t* saveData, bool saving, void* data);
 
 // SAVE AND LOAD CALLBACK
 // functions for both saving and loading a scene collection .
-static void onFrontendSave(obs_data_t* saveData, bool saving, void* /*data*/) {
+static void onFrontendSave(obs_data_t* saveData, bool saving, void* /*data*/) 
+{
     if (!g_soundboard)
         return;
 
@@ -44,14 +45,16 @@ static void onFrontendSave(obs_data_t* saveData, bool saving, void* /*data*/) {
 
 // called after the plugin is loaded
 // this event doesnt load the UI yet
-bool obs_module_load(void) {
+bool obs_module_load(void) 
+{
     blog(LOG_INFO, "[Soundboard] Module loaded");
     return true;  // continues
 }
 
 // this is called after all modules have loaded into OBS
 //  show Soundboard UI
-void obs_module_post_load(void) {
+void obs_module_post_load(void) 
+{
     obs_frontend_push_ui_translation(obs_module_get_string);
     // grab obs window to use as dock's parent
     auto* mainWindow =
@@ -83,7 +86,8 @@ void obs_module_post_load(void) {
 
 // MODULE EVENTS
 // called when obs is about to shut down
-void obs_module_unload(void) {
+void obs_module_unload(void) 
+{
     // First, delete the soundboard to ensure clean destruction
     if (g_soundboard) {
         delete g_soundboard;
@@ -99,53 +103,54 @@ void obs_module_unload(void) {
 }
 
 // FRONTEND EVENTS HANDLER
-static void onEvent(obs_frontend_event event, void*) {
+static void onEvent(obs_frontend_event event, void*) 
+{
     switch (event) {
-        case OBS_FRONTEND_EVENT_FINISHED_LOADING:
-            if (g_soundboard) {
-                // Add and make sure the global audio source is inside scene
-                // sources.
-                g_soundboard->ensureSource();
-            }
-            break;
 
-        case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CHANGING:
-            if (g_soundboard) {
-                // Clear the global audio source before changing collections.
-                g_soundboard->clearSource();
-            }
-            break;
+	case OBS_FRONTEND_EVENT_FINISHED_LOADING:
+		if (g_soundboard) {
+			// Add and make sure the global audio source is inside scene
+			// sources.
+			g_soundboard->ensureSource();
+		}
+		break;
 
-        case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CHANGED:
-            blog(LOG_INFO,
-                 "[Soundboard] Scene collection changed — re-creating source");
-            if (g_soundboard) {
-                g_soundboard->ensureSource();
-            }
-            break;
+	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CHANGING:
+		if (g_soundboard) {
+			// Clear the global audio source before changing collections.
+			g_soundboard->clearSource();
+		}
+		break;
 
-        case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CLEANUP:
-            blog(LOG_INFO, "[Soundboard] Scene collection cleanup");
-            if (g_soundboard) {
-                g_soundboard->clearSource();
-            }
-            break;
+	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CHANGED:
+		blog(LOG_INFO, "[Soundboard] Scene collection changed — re-creating source");
+		if (g_soundboard) {
+			g_soundboard->ensureSource();
+		}
+		break;
 
-        case OBS_FRONTEND_EVENT_EXIT:
-            blog(LOG_INFO, "[Soundboard] OBS exit");
-            if (g_soundboard) {
-                g_soundboard->clearSource();
-            }
-            break;
+	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CLEANUP:
+		blog(LOG_INFO, "[Soundboard] Scene collection cleanup");
+		if (g_soundboard) {
+			g_soundboard->clearSource();
+		}
+		break;
 
-        case OBS_FRONTEND_EVENT_SCENE_COLLECTION_RENAMED:
-            blog(LOG_INFO, "[Soundboard] Scene Collection Renamed");
-            if (g_soundboard) {
-                g_soundboard->ensureSource();
-            }
-            break;
+	case OBS_FRONTEND_EVENT_EXIT:
+		blog(LOG_INFO, "[Soundboard] OBS exit");
+		if (g_soundboard) {
+			g_soundboard->clearSource();
+		}
+		break;
 
-        default:
-            break;
+	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_RENAMED:
+		blog(LOG_INFO, "[Soundboard] Scene Collection Renamed");
+		if (g_soundboard) {
+			g_soundboard->ensureSource();
+		}
+		break;
+
+	default:
+		break;
     }
 }
