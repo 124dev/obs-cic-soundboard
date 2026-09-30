@@ -34,6 +34,9 @@
     "platformConfig": {
         "macos": {
             "bundleId": "com.obs-plugin.obs-cic-soundboard"
+        },
+            "windows": {
+            "appUUID": "aef23a63-3cef-4415-be0d-04d4c5f659a8"
         }
     },
   "name": "obs-cic-soundboard",
