@@ -11,11 +11,13 @@
 OBS_DECLARE_MODULE()
 OBS_MODULE_AUTHOR("124dev");
 OBS_MODULE_USE_DEFAULT_LOCALE("CIC Soundboard", "en-US")
-MODULE_EXPORT const char* obs_module_description(void) {
+MODULE_EXPORT const char* obs_module_description(void) 
+{
     return obs_module_text("Description");
 }
 
-MODULE_EXPORT const char* obs_module_name(void) {
+MODULE_EXPORT const char* obs_module_name(void) 
+{
     return obs_module_text("CIC Soundboard");
 }
 
@@ -114,41 +116,37 @@ static void onEvent(obs_frontend_event event, void*)
 			g_soundboard->ensureSource();
 		}
 		break;
-
 	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CHANGING:
 		if (g_soundboard) {
 			// Clear the global audio source before changing collections.
 			g_soundboard->clearSource();
 		}
 		break;
-
 	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CHANGED:
 		blog(LOG_INFO, "[Soundboard] Scene collection changed — re-creating source");
 		if (g_soundboard) {
 			g_soundboard->ensureSource();
 		}
 		break;
-
 	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CLEANUP:
 		blog(LOG_INFO, "[Soundboard] Scene collection cleanup");
 		if (g_soundboard) {
 			g_soundboard->clearSource();
 		}
 		break;
-
 	case OBS_FRONTEND_EVENT_EXIT:
 		blog(LOG_INFO, "[Soundboard] OBS exit");
 		if (g_soundboard) {
 			g_soundboard->clearSource();
 		}
 		break;
-
 	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_RENAMED:
 		blog(LOG_INFO, "[Soundboard] Scene Collection Renamed");
 		if (g_soundboard) {
 			g_soundboard->ensureSource();
 		}
 		break;
+
 
 	default:
 		break;
