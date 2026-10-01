@@ -1,11 +1,11 @@
-#include <obs-module.h>       
-#include <obs-frontend-api.h> 
+#include <obs-frontend-api.h>
+#include <obs-module.h>
 
 #include <QMainWindow>
 
-#include "soundboard/Soundboard.hpp" 
+#include "soundboard/Soundboard.hpp"
 
-#include "plugin-support.h" 
+#include "plugin-support.h"
 
 // Registers the module with OBS (name, description, author, etc.).
 OBS_DECLARE_MODULE()
@@ -41,7 +41,7 @@ static void onFrontendSave(obs_data_t *saveData, bool saving, void * /*data*/)
 		obs_data_set_obj(saveData, "soundboard", sbData);
 	} else {
 		OBSDataAutoRelease sbData = obs_data_get_obj(saveData, "soundboard");
-		g_soundboard->loadData(sbData); 
+		g_soundboard->loadData(sbData);
 	}
 }
 
@@ -74,8 +74,9 @@ void obs_module_post_load(void)
 	// register save/load hook so data persists with scene collections
 	obs_frontend_add_save_callback(onFrontendSave, nullptr);
 
-	//register the frontend event callback to react to plugin loading, exiting, etc..
-	// just general event listener
+	// register the frontend event callback to react to plugin loading, exiting,
+	// etc..
+	//  just general event listener
 	obs_frontend_add_event_callback(onEvent, nullptr);
 	// show ui
 	obs_frontend_pop_ui_translation();
@@ -87,7 +88,6 @@ void obs_module_post_load(void)
 // called when obs is about to shut down
 void obs_module_unload(void)
 {
-
 	// First, delete the soundboard to ensure clean destruction
 	if (g_soundboard) {
 		delete g_soundboard;
@@ -109,39 +109,35 @@ static void onEvent(obs_frontend_event event, void *)
 
 	case OBS_FRONTEND_EVENT_FINISHED_LOADING:
 		if (g_soundboard) {
-			// Add and make sure the global audio source is inside scene sources.
+			// Add and make sure the global audio source is inside scene
+			// sources.
 			g_soundboard->ensureSource();
 		}
 		break;
-
 	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CHANGING:
 		if (g_soundboard) {
 			// Clear the global audio source before changing collections.
 			g_soundboard->clearSource();
 		}
 		break;
-
 	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CHANGED:
 		blog(LOG_INFO, "[Soundboard] Scene collection changed — re-creating source");
 		if (g_soundboard) {
 			g_soundboard->ensureSource();
 		}
 		break;
-
 	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CLEANUP:
 		blog(LOG_INFO, "[Soundboard] Scene collection cleanup");
 		if (g_soundboard) {
 			g_soundboard->clearSource();
 		}
 		break;
-
 	case OBS_FRONTEND_EVENT_EXIT:
 		blog(LOG_INFO, "[Soundboard] OBS exit");
 		if (g_soundboard) {
 			g_soundboard->clearSource();
 		}
 		break;
-
 	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_RENAMED:
 		blog(LOG_INFO, "[Soundboard] Scene Collection Renamed");
 		if (g_soundboard) {
